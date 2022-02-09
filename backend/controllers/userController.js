@@ -4,6 +4,7 @@ const jwt = require('jsonwebtoken')
 
 // Models
 const User = require('../models/userModel')
+const { rawListeners } = require('../models/userModel')
 
 /**
  * @desc Register a new user
@@ -81,6 +82,20 @@ const loginUser = asyncHandler(async (req, res) => {
   }
 })
 
+/**
+ * @desc Get current user
+ * @route /api/users/me
+ * @access private
+ */
+const getMe = asyncHandler(async (req, res) => {
+  const user = {
+    id: req.user._id,
+    name: req.user.name,
+    email: req.user.email,
+  }
+  res.status(200).json(user)
+})
+
 // Generate token
 const generateToken = id => {
   return jwt.sign({ id }, process.env.JWT_SECRET, {
@@ -91,4 +106,5 @@ const generateToken = id => {
 module.exports = {
   registerUser,
   loginUser,
+  getMe,
 }
