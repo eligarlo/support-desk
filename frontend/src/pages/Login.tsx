@@ -1,4 +1,7 @@
 import { useState } from 'react'
+import { useDispatch } from 'react-redux'
+import { useAppSelector } from 'app/hooks'
+import { login } from 'features/auth/authSlice'
 import { FaSignInAlt } from 'react-icons/fa'
 
 interface IFormData {
@@ -14,6 +17,10 @@ const Login: React.FC = () => {
 
   const { email, password } = formData
 
+  const dispatch = useDispatch()
+
+  const { user, isLoading, isSuccess, message } = useAppSelector(state => state.auth)
+
   const onChange = (e: React.ChangeEvent<HTMLInputElement>): void => {
     setFormData(prevState => ({
       ...prevState,
@@ -23,6 +30,13 @@ const Login: React.FC = () => {
 
   const onSubmit = (e: React.FormEvent) => {
     e.preventDefault()
+
+    const userData = {
+      email,
+      password,
+    }
+
+    dispatch(login(userData))
   }
 
   return (
