@@ -1,10 +1,21 @@
-interface IHomeProps {}
+import { FaQuestionCircle, FaTicketAlt } from 'react-icons/fa'
+import { Link } from 'react-router-dom'
 
-const Home: React.FC<IHomeProps> = ({}) => {
+const Home: React.FC = () => {
   return (
-    <div>
-      <h1>Home</h1>
-    </div>
+    <>
+      <section className='heading'>
+        <h1>What do you need help with?</h1>
+        <p>Please choose from an option below</p>
+      </section>
+
+      <Link to='/new-ticket' className='btn btn-reverse btn-block'>
+        <FaQuestionCircle /> Create New Ticket
+      </Link>
+      <Link to='/tickets' className='btn btn-block'>
+        <FaTicketAlt /> View My Tickets
+      </Link>
+    </>
   )
 }
 
