@@ -5,6 +5,7 @@ import { useAppSelector } from 'app/hooks'
 import { register, reset } from 'features/auth/authSlice'
 import { FaUser } from 'react-icons/fa'
 import { toast } from 'react-toastify'
+import Spinner from 'components/Spinner'
 
 interface IFormData {
   name: string
@@ -62,6 +63,10 @@ const Register: React.FC = () => {
 
       dispatch(register(userData))
     }
+  }
+
+  if (isLoading) {
+    return <Spinner />
   }
 
   return (

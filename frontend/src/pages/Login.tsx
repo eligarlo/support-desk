@@ -3,6 +3,7 @@ import { useDispatch } from 'react-redux'
 import { useAppSelector } from 'app/hooks'
 import { login } from 'features/auth/authSlice'
 import { FaSignInAlt } from 'react-icons/fa'
+import Spinner from 'components/Spinner'
 
 interface IFormData {
   email: string
@@ -37,6 +38,10 @@ const Login: React.FC = () => {
     }
 
     dispatch(login(userData))
+  }
+
+  if (isLoading) {
+    return <Spinner />
   }
 
   return (
