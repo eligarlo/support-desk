@@ -1,8 +1,11 @@
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
+import { useNavigate } from 'react-router-dom'
 import { useDispatch } from 'react-redux'
 import { useAppSelector } from 'app/hooks'
-import { login } from 'features/auth/authSlice'
+import { login, reset } from 'features/auth/authSlice'
+import { toast } from 'react-toastify'
 import { FaSignInAlt } from 'react-icons/fa'
+import { ILoginUser } from 'features/auth/authInterfaces'
 import Spinner from 'components/Spinner'
 
 interface IFormData {
@@ -19,8 +22,22 @@ const Login: React.FC = () => {
   const { email, password } = formData
 
   const dispatch = useDispatch()
+  const navigate = useNavigate()
 
-  const { user, isLoading, isSuccess, message } = useAppSelector(state => state.auth)
+  const { user, isLoading, isSuccess, isError, message } = useAppSelector(state => state.auth)
+
+  useEffect(() => {
+    if (isError) {
+      toast.error(message)
+    }
+
+    // Redirect when logged in
+    if (isSuccess || user) {
+      navigate('/')
+    }
+
+    dispatch(reset)
+  }, [isError, isSuccess, user, message, navigate, dispatch])
 
   const onChange = (e: React.ChangeEvent<HTMLInputElement>): void => {
     setFormData(prevState => ({
@@ -32,7 +49,7 @@ const Login: React.FC = () => {
   const onSubmit = (e: React.FormEvent) => {
     e.preventDefault()
 
-    const userData = {
+    const userData: ILoginUser = {
       email,
       password,
     }
