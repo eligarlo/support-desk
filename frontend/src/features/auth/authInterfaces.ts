@@ -10,6 +10,7 @@ export interface ILoginUser {
 }
 
 export interface IAuthUser extends ILoginUser {
+  name: string
   _id: string
   token: string
 }
