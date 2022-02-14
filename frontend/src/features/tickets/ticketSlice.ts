@@ -1,9 +1,9 @@
 import { createSlice, createAsyncThunk } from '@reduxjs/toolkit'
-import { ITicket } from 'features/tickets/ticketInterfaces'
+import { ISavedTicket, ITicket } from 'features/tickets/ticketInterfaces'
 import ticketService from 'features/tickets/ticketService'
 
 interface ITicketState {
-  tickets: ITicket[]
+  tickets: ISavedTicket[]
   ticket: ITicket
   isError: boolean
   isSuccess: boolean
