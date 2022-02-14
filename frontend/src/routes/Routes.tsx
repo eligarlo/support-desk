@@ -3,6 +3,7 @@ import Home from 'pages/Home'
 import Login from 'pages/Login'
 import Register from 'pages/Register'
 import NewTicket from 'pages/NewTicket'
+import Tickets from 'pages/Tickets'
 import PrivateRoute from 'components/PrivateRoute'
 
 const Routes: React.FC = () => {
@@ -26,6 +27,16 @@ const Routes: React.FC = () => {
         {
           path: '/new-ticket',
           element: <NewTicket />,
+        },
+      ],
+    },
+    {
+      path: '/tickets',
+      element: <PrivateRoute />,
+      children: [
+        {
+          path: '/tickets',
+          element: <Tickets />,
         },
       ],
     },

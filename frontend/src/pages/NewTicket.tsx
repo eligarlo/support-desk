@@ -9,7 +9,7 @@ import BackButton from 'components/BackButton'
 
 const NewTicket: React.FC = () => {
   const { user } = useAppSelector(state => state.auth)
-  const { isLoading, isError, isSuccess, message } = useAppSelector(state => state.ticket)
+  const { isLoading, isError, isSuccess, message } = useAppSelector(state => state.tickets)
 
   const name = user?.name
   const email = user?.email
