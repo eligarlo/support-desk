@@ -1,15 +1,41 @@
+import { useState, useEffect } from 'react'
+import { useNavigate } from 'react-router-dom'
+import { useDispatch } from 'react-redux'
 import { useAppSelector } from 'app/hooks'
-import { useState } from 'react'
+import { createTicket, reset } from 'features/tickets/ticketSlice'
+import { toast } from 'react-toastify'
+import Spinner from 'components/Spinner'
+import BackButton from 'components/BackButton'
 
 const NewTicket: React.FC = () => {
   const { user } = useAppSelector(state => state.auth)
+  const { isLoading, isError, isSuccess, message } = useAppSelector(state => state.ticket)
+
   const name = user?.name
   const email = user?.email
   const [product, setProduct] = useState<string>('iPhone')
   const [description, setDescription] = useState<string>('')
 
+  const dispatch = useDispatch()
+  const navigate = useNavigate()
+
+  useEffect(() => {
+    if (isError) {
+      toast.error(message)
+    }
+
+    if (isSuccess) {
+      dispatch(reset())
+      navigate('/tickets')
+      toast.success('Ticket created successfully')
+    }
+
+    dispatch(reset())
+  }, [dispatch, isError, isSuccess, navigate, message])
+
   const onSubmit = (e: React.FormEvent) => {
     e.preventDefault()
+    dispatch(createTicket({ product, description }))
   }
 
   const onChangeProduct = (e: React.ChangeEvent<HTMLSelectElement>) => {
@@ -20,8 +46,13 @@ const NewTicket: React.FC = () => {
     setDescription(e.target.value)
   }
 
+  if (isLoading) {
+    return <Spinner />
+  }
+
   return (
     <>
+      <BackButton url='/' />
       <section className='heading'>
         <h1>Create New Ticket</h1>
         <p>Please fill out the form below</p>
