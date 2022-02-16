@@ -3,12 +3,16 @@ import { useNavigate, useParams } from 'react-router-dom'
 import { useAppSelector } from 'app/hooks'
 import { useDispatch } from 'react-redux'
 import { getTicket, closeTicket } from 'features/tickets/ticketSlice'
+import { getNotes, reset as notesReset } from 'features/notes/noteSlice'
 import { toast } from 'react-toastify'
+import NoteItem from 'components/NoteItem'
 import Spinner from 'components/Spinner'
 import BackButton from 'components/BackButton'
 
 const Ticket: React.FC = () => {
   const { savedTicket, isLoading, isError, message } = useAppSelector(state => state.tickets)
+
+  const { notes, isLoading: notesIsLoading } = useAppSelector(state => state.notes)
 
   const navigate = useNavigate()
   const params = useParams()
@@ -21,6 +25,7 @@ const Ticket: React.FC = () => {
     }
 
     ticketId && dispatch(getTicket(ticketId))
+    ticketId && dispatch(getNotes(ticketId))
   }, [isError, message, ticketId, dispatch])
 
   const onTicketClose = () => {
@@ -29,7 +34,7 @@ const Ticket: React.FC = () => {
     navigate('/tickets')
   }
 
-  if (isLoading) {
+  if (isLoading || notesIsLoading) {
     return <Spinner />
   }
 
@@ -52,7 +57,12 @@ const Ticket: React.FC = () => {
           <h3>Description of Issue</h3>
           <p>{savedTicket.description}</p>
         </div>
+        {notes.length > 0 && <h2>Notes</h2>}
       </header>
+
+      {notes.map(note => (
+        <NoteItem key={note._id} note={note} />
+      ))}
 
       {savedTicket.status !== 'closed' && (
         <button className='btn btn-block btn-danger' onClick={onTicketClose}>
