@@ -22,6 +22,7 @@
     "mongoose": "^6.2.1"
   },
   "devDependencies": {
+    "@types/react-modal": "^3.13.1",
     "nodemon": "^2.0.15"
   }
 }
