@@ -29,7 +29,7 @@ const getTickets = async (token: string) => {
   return response.data
 }
 
-// Get user tickets
+// Get user ticket
 const getTicket = async (ticketId: string, token: string) => {
   const config = {
     headers: {
